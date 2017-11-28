@@ -12,14 +12,56 @@ def remove_double_bracket(a):
 
 	return res
 
+def rewrite_implication(formula):
+	if "->" in formula:
+		formula = re.sub("->", ">>", formula)
+		formula = re.sub("<>>", "<=>", formula)
+
+	return formula
+
+def subformula(formula):
+	sf = set()
+	formulas = []
+	formula = rewrite_implication(formula)
+	
+	
+	if (">>" in formula) or ("<=>" in formula):
+		formula = logic.expr(formula)
+		formula = logic.eliminate_implications(formula)
+
+	
+	formula = logic.expr(formula)
+	sf.update(set([formula]))
+	formulas.append(formula)
+	
+	while True:
+		n = len(formulas)
+		
+		for f in formulas:
+			f = logic.literal_symbol(f)
+			sf.update(set([f]))
+
+			con = logic.conjuncts(f)
+			sf.update(set(con))
+
+			dis = logic.disjuncts(f)
+			sf.update(set(dis))
+
+		for f in sf:
+			if f not in formulas:
+				formulas.append(f)
+
+		if n == len(formulas):
+			return formulas
+
+
+
 def cnf(formula):
 	result = "{"
 	formula = str(formula)
 
-	if "->" in formula:
-		formula = re.sub("->", ">>", formula)
-		formula = re.sub("<>>", "<=>", formula)
-		
+	formula = rewrite_implication(formula)
+	
 	formula = logic.to_cnf(logic.expr(formula))
 	clauses = logic.conjuncts(formula)
 
@@ -53,8 +95,7 @@ def cnf(formula):
 
 
 def res(formula):
-	formula = re.sub("->", ">>", formula)
-	formula = re.sub("<>>", "<=>", formula)
+	formula = rewrite_implication(formula)
 	
 	formula = logic.to_cnf(logic.expr(formula))
 	clauses = logic.conjuncts(formula)
@@ -119,6 +160,7 @@ def main():
 		if cmd == "ecnf":
 			print f
 			print cnf(formula)
+		
 		elif cmd == "res":
 			a = res(formula)
 
@@ -158,7 +200,12 @@ def main():
 				print x[0] + "does not entails" + x[1]
 
 		elif cmd == "sub":
-			print formula	
+			sf = subformula(formula)
+
+			for f in sf:
+				print f
+
+			print formula + " has " + str(len(sf)) + " different formula"
 
 
 
