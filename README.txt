@@ -1,6 +1,6 @@
 Propositional Logic Solver
 ==========================
-Made with AIMA logic library for Computational Logic Course Programming Assignment.
+Made with AIMA logic library for Computational Logic course programming assignment.
 
 Available command:
 	- sub <FORMULA>
