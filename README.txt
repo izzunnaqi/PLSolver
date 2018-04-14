@@ -1,12 +1,10 @@
 Propositional Logic Solver
 ==========================
-Made with AIMA logic library for Computational Logic Course's Programming Assigment.
+Made with AIMA logic library for Computational Logic Course Programming Assignment.
 
-Available Command:
+Available command:
 	- sub <FORMULA>
 	- ecnf <FORMULA>
 	- res <FORMULA>
 	- valid <FORMULA>
 	- ent <FORMULA>
-
-Mohon maaf apa bila ada kekurangan dan kekhilafan
